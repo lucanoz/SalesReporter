@@ -4,7 +4,7 @@ using SalesReportWebAPI.Models;
 
 namespace SalesReportWebAPI
 {
-  public static class SalesDataProvider
+  internal static class SalesDataProvider
   {
     public static List<Article> SalesData = new List<Article>
     {

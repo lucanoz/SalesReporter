@@ -7,15 +7,22 @@ using SalesReportWebAPI.Models;
 
 namespace SalesReportWebAPI
 {
+  /// <summary>
+  ///   Simulates a primitive data store in memory
+  /// </summary>
   public class InMemoryDataStore : IDataStore
   {
     private readonly List<Article> _soldArticles;
 
+    /// <summary>
+    ///   Creates an instance of <see cref="InMemoryDataStore"/>
+    /// </summary>
     public InMemoryDataStore()
     {
       _soldArticles = SalesDataProvider.SalesData;
     }
 
+    /// <inheritdoc />
     public Task AddSoldArticle(Article article)
     {
       _soldArticles.Add(article);
@@ -23,6 +30,7 @@ namespace SalesReportWebAPI
       return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<DailySaleCount>> GetSoldArticle(DateTime startDay, DateTime endDay)
     {
       Func<Article, bool> dayCondition;
@@ -47,6 +55,7 @@ namespace SalesReportWebAPI
       return Task.FromResult(result);
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<DailyRevenue>> GetRevenues(DateTime startDay, DateTime endDay)
     {
       Func<Article, bool> dayCondition;
@@ -71,7 +80,8 @@ namespace SalesReportWebAPI
       return Task.FromResult(result);
     }
 
-    public Task<IEnumerable<ArticleRevenue>> GetRevenuesByArticleType()
+    /// <inheritdoc />
+    public Task<IEnumerable<ArticleRevenue>> GetRevenuesByArticle()
     {
       IEnumerable<ArticleRevenue> result = _soldArticles
         .GroupBy(article => article.Name, StringComparer.InvariantCultureIgnoreCase)
@@ -83,7 +93,8 @@ namespace SalesReportWebAPI
       return Task.FromResult(result);
     }
 
-    public Task<IEnumerable<DailyArticleRevenue>> GetRevenuesByArticleType(DateTime startDay, DateTime endDay)
+    /// <inheritdoc />
+    public Task<IEnumerable<DailyArticleRevenue>> GetRevenuesByArticle(DateTime startDay, DateTime endDay)
     {
       Func<Article, bool> dayCondition;
 
