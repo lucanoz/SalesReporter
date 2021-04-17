@@ -1,30 +1,27 @@
 ﻿using System;
+using SalesReportWebAPI.Utility;
 
 namespace SalesReportWebAPI.Models
 {
-  public enum ArticleType
-  {
-    Food,
-    Drinks,
-    Accessories,
-    Tools,
-    Toys
-  }
-
   public class Article
   {
-    public string UniqueNumber { get; }
-    public double Price { get; }
-    public DateTime SellTime { get; }
-    public ArticleType Type { get; }
+    public const int MaxArticleUniqueNumberLength = 32;
 
-    public Article(string uniqueNumber, double price, DateTime sellTime, ArticleType type)
+    public string UniqueNumber { get; set; }
+    public double Price { get; set; }
+    public DateTime SellTime { get; set; }
+    public string Name { get; set; }
+
+    public Article()
     {
-      //TODO: validate input (unique number to 32 digits, price > 0)
-      UniqueNumber = uniqueNumber;
-      Price = price;
+    }
+
+    public Article(string uniqueNumber, double price, DateTime sellTime, string name)
+    {
+      UniqueNumber = Enforce.Length(uniqueNumber, MaxArticleUniqueNumberLength);
+      Price = Enforce.NotNegative(price);
       SellTime = sellTime;
-      Type = type;
+      Name = Enforce.NotNullOrEmpty(name);
     }
   }
 }

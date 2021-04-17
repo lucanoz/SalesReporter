@@ -19,6 +19,7 @@ namespace SalesReportWebAPI
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+
       services.AddScoped<IDataStore>(provider => new InMemoryDataStore());
     }
 

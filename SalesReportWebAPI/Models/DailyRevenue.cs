@@ -1,4 +1,5 @@
 ﻿using System;
+using SalesReportWebAPI.Utility;
 
 namespace SalesReportWebAPI.Models
 {
@@ -10,7 +11,7 @@ namespace SalesReportWebAPI.Models
     public DailyRevenue(DateTime day, double amount)
     {
       Day = day;
-      Amount = amount;
+      Amount = Enforce.NotNegative(amount);
     }
   }
 }

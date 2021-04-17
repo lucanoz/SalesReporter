@@ -1,16 +1,17 @@
 ﻿using System;
+using SalesReportWebAPI.Utility;
 
 namespace SalesReportWebAPI.Models
 {
-  public class DailyArticleSale
+  public class DailySaleCount
   {
     public DateTime Day { get; }
     public int Amount { get; }
 
-    public DailyArticleSale(DateTime day, int amount)
+    public DailySaleCount(DateTime day, int amount)
     {
       Day = day;
-      Amount = amount;
+      Amount = Enforce.NotNegative(amount);
     }
   }
 }

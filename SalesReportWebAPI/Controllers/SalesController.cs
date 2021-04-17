@@ -19,26 +19,44 @@ namespace SalesReportWebAPI.Controllers
       _dataStore = dataStore;
     }
 
-    [HttpGet("dailyRevenue")]
-    public async Task<IEnumerable<DailyRevenue>> GetDailyRevenue()
+    [HttpGet("revenue")]
+    public async Task<IEnumerable<DailyRevenue>> GetRevenue()
     {
       return await _dataStore.GetRevenues(DateTime.MinValue, DateTime.Today);
     }
 
-    [HttpGet("dailyRevenue/{targetDay:datetime}")]
+    [HttpGet("revenue/{targetDay:datetime}")]
     public async Task<DailyRevenue> GetRevenue(DateTime targetDay)
     {
       return (await _dataStore.GetRevenues(targetDay.Date, targetDay.Date)).SingleOrDefault();
     }
 
-    [HttpGet("dailySales")]
-    public async Task<IEnumerable<DailyArticleSale>> GetDailySales()
+    [HttpGet("revenueByArticle/total")]
+    public async Task<IEnumerable<ArticleRevenue>> GetTotalRevenueByArticle()
+    {
+      return await _dataStore.GetRevenuesByArticleType();
+    }
+
+    [HttpGet("revenueByArticle")]
+    public async Task<IEnumerable<DailyArticleRevenue>> GetRevenueByArticle()
+    {
+      return await _dataStore.GetRevenuesByArticleType(DateTime.MinValue, DateTime.Today);
+    }
+
+    [HttpGet("revenueByArticle/{targetDay:datetime}")]
+    public async Task<DailyArticleRevenue> GetRevenueByArticle(DateTime targetDay)
+    {
+      return (await _dataStore.GetRevenuesByArticleType(targetDay.Date, targetDay.Date)).SingleOrDefault();
+    }
+
+    [HttpGet]
+    public async Task<IEnumerable<DailySaleCount>> GetSales()
     {
       return await _dataStore.GetSoldArticle(DateTime.MinValue, DateTime.Today);
     }
 
-    [HttpGet("dailySales/{targetDay:datetime}")]
-    public async Task<DailyArticleSale> GetDailySales(DateTime targetDay)
+    [HttpGet("{targetDay:datetime}")]
+    public async Task<DailySaleCount> GetSales(DateTime targetDay)
     {
       return (await _dataStore.GetSoldArticle(targetDay.Date, targetDay.Date)).SingleOrDefault();
     }
@@ -46,7 +64,6 @@ namespace SalesReportWebAPI.Controllers
     [HttpPost]
     public async Task AddArticleSale([FromBody] Article article)
     {
-      //TODO: serialization
       await _dataStore.AddSoldArticle(article);
     }
   }
