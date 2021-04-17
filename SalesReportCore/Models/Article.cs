@@ -1,7 +1,7 @@
 ﻿using System;
-using SalesReportWebAPI.Utility;
+using SalesReportCore.Utility;
 
-namespace SalesReportWebAPI.Models
+namespace SalesReportCore.Models
 {
   /// <summary>
   ///   Model class for an article instance

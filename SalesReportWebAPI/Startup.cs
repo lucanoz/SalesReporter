@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,11 @@ namespace SalesReportWebAPI
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddApiVersioning(config =>
+      {
+        config.DefaultApiVersion = new ApiVersion(1, 0);
+        config.AssumeDefaultVersionWhenUnspecified = true;
+      });
 
       services.AddScoped<IDataStore>(provider => new InMemoryDataStore());
 

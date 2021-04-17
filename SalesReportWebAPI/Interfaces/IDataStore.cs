@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SalesReportWebAPI.Models;
+using SalesReportCore.Models;
 
 namespace SalesReportWebAPI.Interfaces
 {

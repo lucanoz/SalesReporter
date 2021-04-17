@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SalesReportCore.Models;
 using SalesReportWebAPI.Interfaces;
-using SalesReportWebAPI.Models;
 
 namespace SalesReportWebAPI.Controllers
 {
@@ -13,7 +13,7 @@ namespace SalesReportWebAPI.Controllers
   /// </summary>
   [Produces("application/json")]
   [ApiController]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   public class SalesController : ControllerBase
   {
     private readonly IDataStore _dataStore;
@@ -32,9 +32,16 @@ namespace SalesReportWebAPI.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("revenue")]
-    public async Task<IEnumerable<DailyRevenue>> GetRevenue()
+    public async Task<ActionResult<IAsyncEnumerable<DailyRevenue>>> GetRevenue()
     {
-      return await _dataStore.GetRevenues(DateTime.MinValue, DateTime.Today);
+      IEnumerable<DailyRevenue> result = await _dataStore.GetRevenues(DateTime.MinValue, DateTime.Today);
+
+      if (!result.Any())
+      {
+        return NoContent();
+      }
+      
+      return Ok(result);
     }
 
     /// <summary>
@@ -43,9 +50,16 @@ namespace SalesReportWebAPI.Controllers
     /// <param name="targetDay"></param>
     /// <returns></returns>
     [HttpGet("revenue/{targetDay:datetime}")]
-    public async Task<DailyRevenue> GetRevenue(DateTime targetDay)
+    public async Task<ActionResult<DailyRevenue>> GetRevenue(DateTime targetDay)
     {
-      return (await _dataStore.GetRevenues(targetDay.Date, targetDay.Date)).SingleOrDefault();
+      DailyRevenue result = (await _dataStore.GetRevenues(targetDay.Date, targetDay.Date)).SingleOrDefault();
+
+      if (result == null)
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -53,9 +67,16 @@ namespace SalesReportWebAPI.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("revenueByArticle/total")]
-    public async Task<IEnumerable<ArticleRevenue>> GetTotalRevenueByArticle()
+    public async Task<ActionResult<IEnumerable<ArticleRevenue>>> GetTotalRevenueByArticle()
     {
-      return await _dataStore.GetRevenuesByArticle();
+      IEnumerable<ArticleRevenue> result = await _dataStore.GetRevenuesByArticle();
+
+      if (!result.Any())
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -63,9 +84,16 @@ namespace SalesReportWebAPI.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("revenueByArticle")]
-    public async Task<IEnumerable<DailyArticleRevenue>> GetRevenueByArticle()
+    public async Task<ActionResult<IEnumerable<DailyArticleRevenue>>> GetRevenueByArticle()
     {
-      return await _dataStore.GetRevenuesByArticle(DateTime.MinValue, DateTime.Today);
+      IEnumerable<DailyArticleRevenue> result = await _dataStore.GetRevenuesByArticle(DateTime.MinValue, DateTime.Today);
+
+      if (!result.Any())
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -74,9 +102,16 @@ namespace SalesReportWebAPI.Controllers
     /// <param name="targetDay"></param>
     /// <returns></returns>
     [HttpGet("revenueByArticle/{targetDay:datetime}")]
-    public async Task<DailyArticleRevenue> GetRevenueByArticle(DateTime targetDay)
+    public async Task<ActionResult<DailyArticleRevenue>> GetRevenueByArticle(DateTime targetDay)
     {
-      return (await _dataStore.GetRevenuesByArticle(targetDay.Date, targetDay.Date)).SingleOrDefault();
+      DailyArticleRevenue result = (await _dataStore.GetRevenuesByArticle(targetDay.Date, targetDay.Date)).SingleOrDefault();
+      
+      if (result == null)
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -84,9 +119,16 @@ namespace SalesReportWebAPI.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IEnumerable<DailySaleCount>> GetSales()
+    public async Task<ActionResult<IEnumerable<DailySaleCount>>> GetSales()
     {
-      return await _dataStore.GetSoldArticle(DateTime.MinValue, DateTime.Today);
+      IEnumerable<DailySaleCount> result = await _dataStore.GetSoldArticle(DateTime.MinValue, DateTime.Today);
+      
+      if (!result.Any())
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -95,9 +137,16 @@ namespace SalesReportWebAPI.Controllers
     /// <param name="targetDay"></param>
     /// <returns></returns>
     [HttpGet("{targetDay:datetime}")]
-    public async Task<DailySaleCount> GetSales(DateTime targetDay)
+    public async Task<ActionResult<DailySaleCount>> GetSales(DateTime targetDay)
     {
-      return (await _dataStore.GetSoldArticle(targetDay.Date, targetDay.Date)).SingleOrDefault();
+      DailySaleCount result = (await _dataStore.GetSoldArticle(targetDay.Date, targetDay.Date)).SingleOrDefault();
+
+      if (result == null)
+      {
+        return NoContent();
+      }
+
+      return Ok(result);
     }
 
     /// <summary>
@@ -105,9 +154,11 @@ namespace SalesReportWebAPI.Controllers
     /// </summary>
     /// <param name="article"></param>
     [HttpPost]
-    public async Task AddArticleSale([FromBody] Article article)
+    public async Task<ActionResult> AddArticleSale([FromBody] Article article)
     {
       await _dataStore.AddSoldArticle(article);
+
+      return Ok();
     }
   }
 }

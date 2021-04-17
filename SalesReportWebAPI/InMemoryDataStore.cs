@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SalesReportCore.Models;
 using SalesReportWebAPI.Interfaces;
-using SalesReportWebAPI.Models;
 
 namespace SalesReportWebAPI
 {

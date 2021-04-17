@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using SalesReportWebAPI.Models;
+using System.Runtime.CompilerServices;
+using SalesReportCore.Models;
 
+[assembly: InternalsVisibleTo("SalesReportWebAPI.Test.Integration")]
 namespace SalesReportWebAPI
 {
   internal static class SalesDataProvider

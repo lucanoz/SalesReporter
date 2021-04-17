@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SalesReportWebAPI.Utility
+namespace SalesReportCore.Utility
 {
   /// <summary>
   ///   Utility class for validation checks

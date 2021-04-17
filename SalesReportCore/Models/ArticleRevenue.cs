@@ -1,6 +1,6 @@
-﻿using SalesReportWebAPI.Utility;
+﻿using SalesReportCore.Utility;
 
-namespace SalesReportWebAPI.Models
+namespace SalesReportCore.Models
 {
   /// <summary>
   ///   Model class for revenue of an article
@@ -10,11 +10,22 @@ namespace SalesReportWebAPI.Models
     /// <summary>
     ///   Name of the article
     /// </summary>
-    public string Name { get; }
+    public string Name { get; set; }
     /// <summary>
     ///   Total revenue in EUR(€)
     /// </summary>
-    public double Amount { get; }
+    public double Amount { get; set; }
+
+    /// <summary>
+    ///   Creates an instance of <see cref="ArticleRevenue"/>
+    /// </summary>
+    /// <remarks>
+    ///   Default ctor is for serialization purposes only, otherwise a parametrized one should be used
+    /// </remarks>
+    public ArticleRevenue()
+    {
+      //Purposefully created for JSON (de)serialization
+    }
 
     /// <summary>
     ///   Creates an instance of <see cref="ArticleRevenue"/>
