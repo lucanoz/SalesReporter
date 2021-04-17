@@ -54,5 +54,10 @@ namespace SalesReportCore.Models
       SellTime = sellTime;
       Name = Enforce.NotNullOrEmpty(name);
     }
+
+    public override string ToString()
+    {
+      return $"{nameof(UniqueNumber)}: {UniqueNumber}; {nameof(Price)}: {Price}; {nameof(SellTime)}: {SellTime:s}; {nameof(Name)}: {Name};";
+    }
   }
 }

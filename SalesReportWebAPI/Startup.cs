@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SalesReportWebAPI.Interfaces;
+using SalesReportWebAPI.Middleware;
 
 namespace SalesReportWebAPI
 {
@@ -52,6 +53,7 @@ namespace SalesReportWebAPI
       {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "SalesReport API v1");
       });
+      app.UseMiddleware<LoggingMiddleware>();
 
       app.UseHttpsRedirection();
       app.UseRouting();
